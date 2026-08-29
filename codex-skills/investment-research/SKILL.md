@@ -50,9 +50,8 @@ This skill is generated from `skills/investment-research.md` so Claude Code and 
 ### 第一步：数据收集
 
 > **数据源规范**：参见 `skills/financial-data.md`。所有财务数据必须来自两个独立来源，误差>1%须标记。
-> - 美股：macrotrends（主）+ stockanalysis（副）
-> - 港股：aastocks（主）+ macrotrends ADR（副）
-> - A股：东方财富（主）+ 巨潮资讯（副）
+> - 美股/港股/A股：腾讯自选股-金融数据查询（主，`westockdata`）+ NeoData金融搜索服务（副，`neodata-financial-search`），后备：东方财富妙想金融数据（`mx-finance-data`，仅主副均不可用时）
+> - 台股：FinMind `tools/twstock_data.py`（主）+ Goodinfo（副）
 
 使用 Task 工具启动后台 Agent，从网络收集以下数据：
 
@@ -300,7 +299,7 @@ python3 tools/report_audit.py extract \
 
 **Step 2 — 取数核验：**
 对清单中每个数据点，按 `skills/financial-data.md` 规范从可靠信源取数
-（美股：macrotrends+stockanalysis；港股：aastocks+macrotrends；A股：东方财富+巨潮资讯），
+（美股/港股/A股：腾讯自选股-金融数据查询 + NeoData金融搜索服务，后备：东方财富妙想金融数据；台股：FinMind+Goodinfo），
 填入 `fetched_value` / `fetched_source` / `fetched_value2` / `fetched_source2`。
 
 **Step 3 — 输出判决：**

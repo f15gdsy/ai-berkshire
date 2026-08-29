@@ -8,26 +8,32 @@
 
 ### 美股（PDD、腾讯ADR、网易ADR等）
 
-| 优先级 | 来源 | URL | 获取方式 |
-|--------|------|-----|---------|
-| 1（主） | **macrotrends** | macrotrends.net/stocks/charts/{ticker} | 直接访问，无需注册 |
-| 2（副） | **stockanalysis** | stockanalysis.com/stocks/{ticker}/financials | 直接访问，无需注册 |
-| 原始一手 | SEC EDGAR | sec.gov/cgi-bin/browse-edgar | 10-K / 10-Q 原文 |
+| 优先级 | 来源 | 调用方式 |
+|--------|------|---------|
+| 1（主） | **腾讯自选股-金融数据查询** | 技能 `westockdata`：结构化行情/财报/估值，覆盖A港美 |
+| 2（副） | **NeoData金融搜索服务** | 技能 `neodata-financial-search`：自然语言查询财报/行情 |
+| 后备 | **东方财富妙想金融数据** | 技能 `mx-finance-data`：仅当主、副两源均不可用时使用，并在报告中标注 |
+| 原始一手 | SEC EDGAR | sec.gov/cgi-bin/browse-edgar，10-K / 10-Q 原文 |
 
 ### 港股（腾讯0700、网易9999、美团3690等）
 
-| 优先级 | 来源 | URL | 获取方式 |
-|--------|------|-----|---------|
-| 1（主） | **aastocks** | aastocks.com/tc/stocks/analysis/company-fundamental | 直接访问 |
-| 2（副） | **macrotrends**（ADR代码） | 腾讯用TCEHY，网易用NTES | 直接访问 |
-| 原始一手 | HKEX披露易 | hkexnews.hk | 年报PDF |
+| 优先级 | 来源 | 调用方式 |
+|--------|------|---------|
+| 1（主） | **腾讯自选股-金融数据查询** | 技能 `westockdata` |
+| 2（副） | **NeoData金融搜索服务** | 技能 `neodata-financial-search` |
+| 后备 | **东方财富妙想金融数据** | 技能 `mx-finance-data`：仅当主、副两源均不可用时使用，并在报告中标注 |
+| 原始一手 | HKEX披露易 | hkexnews.hk，年报PDF |
 
 ### A股（三七互娱、吉比特等）
 
-| 优先级 | 来源 | URL | 获取方式 |
-|--------|------|-----|---------|
-| 1（主） | **东方财富** | eastmoney.com → 搜股票代码 → 财务报表 | 直接访问 |
-| 2（副） | **巨潮资讯** | cninfo.com.cn | 原始年报/季报PDF |
+| 优先级 | 来源 | 调用方式 |
+|--------|------|---------|
+| 1（主） | **腾讯自选股-金融数据查询** | 技能 `westockdata` |
+| 2（副） | **NeoData金融搜索服务** | 技能 `neodata-financial-search` |
+| 后备 | **东方财富妙想金融数据** | 技能 `mx-finance-data`：仅当主、副两源均不可用时使用，并在报告中标注 |
+| 原始一手 | 巨潮资讯 | cninfo.com.cn，原始年报/季报PDF |
+
+> **使用规则**：主源（腾讯自选股）负责取数，副源（NeoData）用于交叉验证；主、副两源均失败时才允许降级到后备源（妙想），且必须在报告中标注"数据来自后备源"。原始财报优先规则不变：若两源均与原始财报（10-K/年报PDF）不符，以原始财报为准。
 
 ### 台股（台积电2330、联发科2454、大立光3008等）
 
@@ -82,16 +88,16 @@ python3 tools/twstock_data.py search 台積        # 搜索股票代码（注意
 
 ```
 收入：1,239亿元 ✅
-  - macrotrends: 1,241亿元
-  - stockanalysis: 1,237亿元
+  - 腾讯自选股: 1,241亿元
+  - NeoData: 1,237亿元
   - 误差: 0.3%
 ```
 
 差异示例：
 ```
 净利润：245亿元 ⚠️ 数据存在差异
-  - macrotrends: 245亿元（GAAP）
-  - stockanalysis: 278亿元（Non-GAAP）
+  - 腾讯自选股: 245亿元（GAAP）
+  - NeoData: 278亿元（Non-GAAP）
   - 误差: 13.5% — 原因：会计口径不同（GAAP vs Non-GAAP）
 ```
 
@@ -141,12 +147,12 @@ python3 tools/twstock_data.py search 台積        # 搜索股票代码（注意
 
 | 场景 | 主要来源 | 备用来源 |
 |------|---------|---------|
-| PDD / 拼多多 | macrotrends.net/stocks/charts/PDD | stockanalysis.com/stocks/pdd |
-| 腾讯 | macrotrends.net/stocks/charts/TCEHY | aastocks（0700.HK） |
-| 网易 | macrotrends.net/stocks/charts/NTES | aastocks（9999.HK） |
-| 三七互娱 | eastmoney.com（002555） | cninfo.com.cn |
-| 吉比特 | eastmoney.com（603444） | cninfo.com.cn |
-| Nintendo | macrotrends.net/stocks/charts/NTDOY | stockanalysis.com/stocks/ntdoy |
-| Capcom | macrotrends（CCOEY） | stockanalysis（CCOEY） |
+| PDD / 拼多多 | 腾讯自选股（PDD.O） | NeoData / 妙想 |
+| 腾讯 | 腾讯自选股（00700.HK） | NeoData / 妙想 |
+| 网易 | 腾讯自选股（09999.HK） | NeoData / 妙想 |
+| 三七互娱 | 腾讯自选股（002555.SZ） | NeoData / 妙想 |
+| 吉比特 | 腾讯自选股（603444.SH） | NeoData / 妙想 |
+| Nintendo | 腾讯自选股（NTDOY） | NeoData / 妙想 |
+| Capcom | 腾讯自选股（CCOEY） | NeoData / 妙想 |
 | 台积电 | tools/twstock_data.py（2330） | goodinfo.tw / macrotrends（TSM，注意1 ADR=5股） |
 | 联发科 | tools/twstock_data.py（2454） | goodinfo.tw |
