@@ -26,6 +26,7 @@ This skill is generated from `skills/financial-data.md` so Claude Code and Codex
 | 优先级 | 来源 | 调用方式 |
 |--------|------|---------|
 | 1（主） | **腾讯自选股-金融数据查询** | 技能 `westockdata`：结构化行情/财报/估值，覆盖A港美 |
+| 横向对照 | **通达信 MCP** | 连接器 `tdx-connector`：对主源关键数据做横向对照验证 |
 | 2（副） | **NeoData金融搜索服务** | 技能 `neodata-financial-search`：自然语言查询财报/行情 |
 | 后备 | **东方财富妙想金融数据** | 技能 `mx-finance-data`：仅当主、副两源均不可用时使用，并在报告中标注 |
 | 原始一手 | SEC EDGAR | sec.gov/cgi-bin/browse-edgar，10-K / 10-Q 原文 |
@@ -35,6 +36,7 @@ This skill is generated from `skills/financial-data.md` so Claude Code and Codex
 | 优先级 | 来源 | 调用方式 |
 |--------|------|---------|
 | 1（主） | **腾讯自选股-金融数据查询** | 技能 `westockdata` |
+| 横向对照 | **通达信 MCP** | 连接器 `tdx-connector`：对主源关键数据做横向对照验证 |
 | 2（副） | **NeoData金融搜索服务** | 技能 `neodata-financial-search` |
 | 后备 | **东方财富妙想金融数据** | 技能 `mx-finance-data`：仅当主、副两源均不可用时使用，并在报告中标注 |
 | 原始一手 | HKEX披露易 | hkexnews.hk，年报PDF |
@@ -44,11 +46,12 @@ This skill is generated from `skills/financial-data.md` so Claude Code and Codex
 | 优先级 | 来源 | 调用方式 |
 |--------|------|---------|
 | 1（主） | **腾讯自选股-金融数据查询** | 技能 `westockdata` |
+| 横向对照 | **通达信 MCP** | 连接器 `tdx-connector`：对主源关键数据做横向对照验证 |
 | 2（副） | **NeoData金融搜索服务** | 技能 `neodata-financial-search` |
 | 后备 | **东方财富妙想金融数据** | 技能 `mx-finance-data`：仅当主、副两源均不可用时使用，并在报告中标注 |
 | 原始一手 | 巨潮资讯 | cninfo.com.cn，原始年报/季报PDF |
 
-> **使用规则**：主源（腾讯自选股）负责取数，副源（NeoData）用于交叉验证；主、副两源均失败时才允许降级到后备源（妙想），且必须在报告中标注"数据来自后备源"。原始财报优先规则不变：若两源均与原始财报（10-K/年报PDF）不符，以原始财报为准。
+> **使用规则**：主源（腾讯自选股）负责取数，**横向对照源（通达信 MCP）对主源的关键数据做交叉验证**（对照优先于副源）；通达信 MCP 不可用或覆盖不了该字段时，降级用副源（NeoData）交叉验证；主源与对照/副源均不可用时，才允许降级到后备源（妙想），且必须在报告中标注"数据来自后备源"。原始财报优先规则不变：若两源均与原始财报（10-K/年报PDF）不符，以原始财报为准。
 
 ### 台股（台积电2330、联发科2454、大立光3008等）
 
@@ -104,11 +107,11 @@ python3 tools/twstock_data.py search 台積        # 搜索股票代码（注意
 ```
 收入：1,239亿元 ✅
   - 腾讯自选股: 1,241亿元
-  - NeoData: 1,237亿元
+  - 通达信 MCP: 1,237亿元
   - 误差: 0.3%
 ```
 
-差异示例：
+差异示例（对照源不可用时降级用副源 NeoData 验证）：
 ```
 净利润：245亿元 ⚠️ 数据存在差异
   - 腾讯自选股: 245亿元（GAAP）
@@ -159,6 +162,8 @@ python3 tools/twstock_data.py search 台積        # 搜索股票代码（注意
 ---
 
 ## 快速索引
+
+> 美股/港股/A股标的取数后，统一先用通达信 MCP（`tdx-connector`）做横向对照验证；通达信不可用时用 NeoData 副源验证。台股走 FinMind+Goodinfo 体系，不经通达信。
 
 | 场景 | 主要来源 | 备用来源 |
 |------|---------|---------|

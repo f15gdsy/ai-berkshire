@@ -12,8 +12,9 @@ Requires Python >= 3.7.
     python3 tools/report_audit.py extract --report reports/xxx.md
 
   Step 2 — Claude 对抽检清单中的每个数据点，从可靠信源（主：腾讯自选股
-            westockdata；副：NeoData金融搜索；后备：东方财富妙想，见
-            skills/financial-data.md）取数，填入 fetched_value
+            westockdata；横向对照：通达信 MCP tdx-connector，不可用时降级
+            NeoData金融搜索；后备：东方财富妙想，见 skills/financial-data.md）
+            取数，填入 fetched_value
 
   Step 3 — 输入核验结果，输出准出/打回判决：
     python3 tools/report_audit.py verdict --results '[...]'
