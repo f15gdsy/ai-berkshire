@@ -8,11 +8,30 @@ GitHub: xbtlin/ai-berkshire
 ## 项目结构
 
 ```
-skills/          — 投研 Skill 定义（.md），复制到 ~/.claude/commands/ 使用
-tools/           — 辅助工具（financial_rigor.py 精确计算、twstock_data.py 台股FinMind取数）
-reports/         — 投资研究报告输出
-assets/          — 图片等静态资源
+skills/            — 投研 Skill 定义（.md，含 YAML frontmatter：name + description），唯一规范源
+codex-skills/      — 生成的 Codex skill 包（sync-codex-skills.py）
+workbuddy-skills/  — 生成的 WorkBuddy skill 包（sync-workbuddy-skills.py，含 ai-berkshire-tools 共享工具包）
+tools/             — 辅助工具（financial_rigor.py 精确计算、twstock_data.py 台股FinMind取数）
+reports/           — 投资研究报告输出
+assets/            — 图片等静态资源
 ```
+
+## Skill 同步与多 harness 兼容
+
+- `skills/` 是唯一规范源，每个文件头部有 YAML frontmatter：`name` + `description`（能力摘要 + 中文触发词 + 输入格式，description 是各 harness 自动触发 skill 的匹配面，务必写全触发词）。
+- 三个安装目标：Claude Code（`~/.claude/commands/`）、Codex（`codex-skills/` → `~/.codex/skills`）、WorkBuddy（`workbuddy-skills/` → `~/.workbuddy/skills/`）。
+- 修改 `skills/*.md` 或 `tools/` 中被 skill 引用的脚本后，必须运行：
+  ```bash
+  python3 scripts/sync-codex-skills.py
+  python3 scripts/sync-workbuddy-skills.py
+  ```
+- 发布（commit）前用 `--check` 验证生成物无漂移：
+  ```bash
+  python3 scripts/sync-codex-skills.py --check
+  python3 scripts/sync-workbuddy-skills.py --check
+  ```
+- WorkBuddy 安装：`./scripts/install-workbuddy-skills.sh`（先 sync 再复制到 `~/.workbuddy/skills/`）。`ai-berkshire-tools` 是其他 AI Berkshire WorkBuddy skill 的共享工具依赖（工具解析链：仓库 tools/ → 该包 scripts/ → Python 内联降级），必须随其他 skill 一起安装。
+- 跨 skill 引用一律用 skill 名（如 `investment-team`），不用 `/` 斜杠命令形式，并注明未安装时独立降级执行。
 
 ## 报告目录结构
 

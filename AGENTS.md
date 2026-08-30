@@ -1,39 +1,60 @@
 # AI Berkshire Codex Guide
 
 This repository contains investment research workflows, reports, and shared
-validation tools. Keep compatibility with both Claude Code and Codex users.
+validation tools. Keep compatibility with Claude Code, Codex, and WorkBuddy
+users.
 
 ## Project Layout
 
-- `skills/*.md`: Claude Code slash-command source files.
+- `skills/*.md`: canonical skill source files (Claude Code slash-command
+  format) with YAML frontmatter (`name` + `description`; the description
+  carries capability summary, Chinese trigger words, and input format, and
+  drives automatic skill matching across harnesses).
 - `codex-skills/*/SKILL.md`: Codex skill packages. Most are generated from
   `skills/*.md`; Codex-only hand-written packages are allowed when clearly
   marked and no same-named `skills/*.md` source exists.
 - `codex-prompts/*.md`: generated Codex custom prompts for slash-command
   style entry points. These are a compatibility layer; skills remain preferred.
-- `tools/*.py`: shared financial validation and data tools used by both systems.
+- `workbuddy-skills/`: generated WorkBuddy skill packages produced by
+  `scripts/sync-workbuddy-skills.py`, plus the shared `ai-berkshire-tools`
+  pseudo skill package (bundled tool scripts other skills resolve at
+  runtime: repository `tools/` -> `ai-berkshire-tools/scripts/` -> inline
+  Python exact-arithmetic fallback).
+- `tools/*.py`: shared financial validation and data tools used by all systems.
 - `reports/`: research outputs. Do not rewrite unrelated reports while changing
   tooling or skills.
 - `scripts/sync-codex-skills.py`: regenerates Codex skills from `skills/*.md`.
+- `scripts/sync-workbuddy-skills.py`: regenerates WorkBuddy skills (and the
+  `ai-berkshire-tools` package) from `skills/*.md`; `--check` also verifies
+  that every tool script referenced by any skill is bundled.
 - `scripts/install-codex-skills.sh` / `scripts/install-codex-skills.bat`:
   installs Codex skills locally.
 - `scripts/install-codex-prompts.sh` / `scripts/install-codex-prompts.bat`:
   installs generated Codex slash prompts locally.
+- `scripts/install-workbuddy-skills.sh` / `scripts/install-workbuddy-skills.bat`:
+  installs WorkBuddy skills to `~/.workbuddy/skills/` (keep
+  `ai-berkshire-tools` installed alongside the other skills).
 - `scripts/install-claude-commands.sh` / `scripts/install-claude-commands.bat`:
   installs Claude Code commands locally.
 
 ## Compatibility Rules
 
 - Treat `skills/*.md` as the canonical workflow source.
-- After changing any file in `skills/`, run:
+- After changing any file in `skills/` or any tool script referenced by a
+  skill, run:
   `python3 scripts/sync-codex-skills.py`
+  `python3 scripts/sync-workbuddy-skills.py`
 - If slash prompt compatibility is needed, also run:
   `python3 scripts/sync-codex-prompts.py`
-- Do not manually edit generated `codex-skills/*/SKILL.md` unless also updating
-  the corresponding source in `skills/`.
+- Do not manually edit generated `codex-skills/*/SKILL.md` or
+  `workbuddy-skills/*/SKILL.md` unless also updating the corresponding source
+  in `skills/`.
 - For Codex-only hand-written packages under `codex-skills/`, keep them clearly
   marked as Codex-only and do not create a same-named `skills/*.md` file unless
   intentionally adopting the workflow for Claude Code too.
+- Cross-skill references use plain skill names (e.g. `investment-team`), not
+  slash-command form, and note that the skill degrades gracefully when not
+  installed.
 - Keep tool paths compatible with the documented checkout path:
   `~/ai-berkshire/tools/...`
 - Keep `CLAUDE.md` for Claude Code behavior and this `AGENTS.md` for Codex
@@ -63,7 +84,9 @@ validation tools. Keep compatibility with both Claude Code and Codex users.
 - Before finishing a skill/tool change, run the relevant syntax or generation
   check. For compatibility changes, run:
   `python3 scripts/sync-codex-skills.py`
-- To verify generated Codex artifacts are current without rewriting files, run:
+  `python3 scripts/sync-workbuddy-skills.py`
+- To verify generated artifacts are current without rewriting files, run:
   `python3 scripts/sync-codex-skills.py --check`
+  `python3 scripts/sync-workbuddy-skills.py --check`
   and, when slash prompts are relevant:
   `python3 scripts/sync-codex-prompts.py --check`
