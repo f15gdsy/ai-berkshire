@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Pre-commit hook: verify generated skill artifacts are in sync with sources.
+# Activate after a fresh clone with:
+#   git config core.hooksPath scripts/hooks
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+STALE=()
+
+# Only run checks when relevant files are staged.
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(skills/|tools/|workbuddy-skills/|codex-skills/)'; then
+  if ! python3 "$ROOT/scripts/sync-workbuddy-skills.py" --check >/dev/null 2>&1; then
+    STALE+=("workbuddy-skills/")
+  fi
+  if ! python3 "$ROOT/scripts/sync-codex-skills.py" --check >/dev/null 2>&1; then
+    STALE+=("codex-skills/")
+  fi
+fi
+
+if [ "${#STALE[@]}" -gt 0 ]; then
+  echo "ERROR: generated skill artifacts are out of date: ${STALE[*]}"
+  echo ""
+  echo "Fix by running from the repository root:"
+  echo "  python3 scripts/sync-workbuddy-skills.py"
+  echo "  python3 scripts/sync-codex-skills.py"
+  echo ""
+  echo "Then 'git add' the regenerated files and commit again."
+  exit 1
+fi
