@@ -1,6 +1,6 @@
 ---
 name: industry-funnel
-description: "AI Berkshire skill: 行业漏斗筛选：从全市场到 3 家的价值投资精选流程. Source: skills/industry-funnel.md."
+description: "行业漏斗筛选：从全市场扫描逐层漏斗精选到 3 家终选标的（覆盖A股、港股、美股、未上市候选），价值投资口径，不遗漏任何重要标的。触发词：行业筛选、漏斗筛选、这个行业买什么、行业选股、精选3家。输入：行业/方向（如\"AI算力\"、\"创新药\"、\"机器人\"）。"
 ---
 
 ## Codex adapter note
@@ -313,8 +313,8 @@ python3 tools/report_audit.py verdict \
 ## 后续动作
 
 漏斗终选 3 家后，对每家可单独执行：
-- `/investment-team` —— 完整四大师并行深度研究（独立子目录 + 5 文档）
-- `/investment-checklist` —— 巴菲特买入前 checklist 系统过一遍
-- `/management-deep-dive` —— 管理层纵深研究
+- `investment-team` —— 完整四大师并行深度研究（独立子目录 + 5 文档）
+- `investment-checklist` —— 巴菲特买入前 checklist 系统过一遍
+- `management-deep-dive` —— 管理层纵深研究
 
-`industry-funnel` 是入口，后续 skill 是深挖。
+以上均为 skill 名（非斜杠命令），未安装时独立降级执行相应部分。`industry-funnel` 是入口，后续 skill 是深挖。

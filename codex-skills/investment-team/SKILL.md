@@ -1,6 +1,6 @@
 ---
 name: investment-team
-description: "AI Berkshire skill: 投研团队：四角色并行分析框架. Source: skills/investment-team.md."
+description: "投研团队（四角色并行）：创建多 Agent 并行研究团队，对一家公司做团队化投资研究——比单 Agent 版更全面、更快。首次研究一家公司时使用。触发词：投研团队、团队研究、多Agent研究、全面研究一家公司。输入：公司名。"
 ---
 
 ## Codex adapter note

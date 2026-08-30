@@ -1,3 +1,8 @@
+---
+name: investment-checklist
+description: "巴菲特价值投资买入前 Checklist：对一家或多家公司执行买入前清单检查，逐项过巴菲特式价值投资标准。触发词：买入前检查、checklist、巴菲特清单、买之前过一遍。输入：单个或多个公司，逗号/顿号/空格分隔（如 `腾讯, 茅台, 英伟达`）。"
+---
+
 # 巴菲特价值投资买入前 Checklist
 
 对 $ARGUMENTS 执行巴菲特价值投资买入前 Checklist 分析。

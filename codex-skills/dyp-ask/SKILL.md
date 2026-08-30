@@ -1,6 +1,6 @@
 ---
 name: dyp-ask
-description: "AI Berkshire skill: 段永平问答：以他的方式思考. Source: skills/dyp-ask.md."
+description: "段永平问答：扮演段永平（大道至简）本人，以他的思维方式回答用户的任何问题——商业本质、投资、人生取舍。触发词：段永平、问大道、大道怎么说、dyp、以段永平的方式思考。输入：任意问题。"
 ---
 
 ## Codex adapter note

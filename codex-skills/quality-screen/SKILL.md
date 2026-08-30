@@ -1,6 +1,6 @@
 ---
 name: quality-screen
-description: "AI Berkshire skill: 去劣筛选：7条指标快速排除非一流公司. Source: skills/quality-screen.md."
+description: "去劣筛选：用 7 条指标快速排除不符合一流公司标准的标的——先去劣，再精选。触发词：去劣筛选、排除公司、7条指标、快速排雷。输入：一个或多个公司（见文内输入格式表）。"
 ---
 
 ## Codex adapter note

@@ -1,6 +1,6 @@
 ---
 name: income-investment
-description: "AI Berkshire skill: Income Investment: Durable and Opportunistic Distribution Analysis. Source: skills/income-investment.md."
+description: "Income Investment（收益型投资分析）：评估公司能否产生持久且有吸引力的可分配收益（distributable income），以决定其能否作为组合中的长期收益仓位或机会主义收益仓位。不把高 displayed yield 当作好机会的证据。触发词：收益投资、股息可持续性、可分配收益、分红分析、income、高股息。输入：公司名或代码。"
 ---
 
 ## Codex adapter note

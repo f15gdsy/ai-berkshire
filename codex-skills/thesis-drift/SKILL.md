@@ -1,6 +1,6 @@
 ---
 name: thesis-drift
-description: "AI Berkshire skill: 投资论文漂移检测：分清事实变化与措辞变化. Source: skills/thesis-drift.md."
+description: "投资论文漂移检测：对比两份投资论文/研究报告，分清\"事实变化\"与\"措辞变化\"——论点是被新证据改变了，还是只是换了个说法。触发词：论文漂移、观点变了没、论点漂移、措辞变化检测。输入：`公司名`（自动查找历史快照）或 `公司名 旧报告路径 新报告路径`。"
 ---
 
 ## Codex adapter note
@@ -35,7 +35,7 @@ This skill is generated from `skills/thesis-drift.md` so Claude Code and Codex u
 
 投资论文漂移检测的目标是：**只在证据变化时承认论文变化**。不能因为报告换了写法就制造漂移，也不能因为股价涨跌就误判基本面。
 
-本 Skill 依赖 `/thesis-tracker` 输出的结构化维度：核心假设清单、红线清单、估值锚点、追踪记录表。没有这些结构时，先补齐基线，再做漂移检测。
+本 Skill 依赖 `thesis-tracker`（skill 名，未安装时先自行补齐结构化基线）输出的结构化维度：核心假设清单、红线清单、估值锚点、追踪记录表。没有这些结构时，先补齐基线，再做漂移检测。
 
 ## 执行流程
 
@@ -196,7 +196,7 @@ python3 tools/financial_rigor.py calc --expr '{精确算式}'
 
 1. 明确说明：**缺少可比较的历史基线，不能执行漂移检测**
 2. 不要根据记忆或市场印象补造旧论文
-3. 引导用户先使用 `/thesis-tracker {公司名} 建立论文` 建立结构化基线
+3. 引导用户先使用 `thesis-tracker {公司名} 建立论文`（skill 名，未安装时按其文档自行建立基线）建立结构化基线
 4. 如果当前报告已足够完整，可建议将它保存为 `reports/{公司名}-thesis.md` 作为未来漂移检测基线
 
 输出格式：

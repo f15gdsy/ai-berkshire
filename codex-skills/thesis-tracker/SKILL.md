@@ -1,6 +1,6 @@
 ---
 name: thesis-tracker
-description: "AI Berkshire skill: 投资论文追踪：买入后的纪律系统. Source: skills/thesis-tracker.md."
+description: "投资论文追踪：买入后的纪律系统——首次使用建立投资论文，后续按季度/事件做追踪检查，检验买入理由是否依然成立。触发词：论文追踪、投资论文、买入后检查、纪律检查、季度检查。输入：`公司名`、`公司名 建立论文`、`公司名 季度检查`。"
 ---
 
 ## Codex adapter note
@@ -50,7 +50,7 @@ This skill is generated from `skills/thesis-tracker.md` so Claude Code and Codex
 
 ### A0：数据收集
 
-使用 WebSearch 获取当前股价、估值指标（PE/PB/股息率）、最新财报核心数据，用于填写估值锚点。如果已有该公司的 `/investment-research` 或 `/investment-team` 报告，优先从中读取。
+使用 WebSearch 获取当前股价、估值指标（PE/PB/股息率）、最新财报核心数据，用于填写估值锚点。如果已有该公司的 `investment-research` 或 `investment-team`（skill 名，未安装时跳过此步）报告，优先从中读取。
 
 使用 `tools/financial_rigor.py verify-valuation` 校验估值数据。
 

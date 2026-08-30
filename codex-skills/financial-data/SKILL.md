@@ -1,6 +1,6 @@
 ---
 name: financial-data
-description: "AI Berkshire skill: 财务数据获取与交叉验证规范. Source: skills/financial-data.md."
+description: "财务数据获取与交叉验证规范：所有涉及企业财务数据研究的强制规范——每个关键数据必须来自两个独立来源、误差>1%须标记、明确数据源优先级（含A股/港股/美股/台股取数方式）。触发词：财务数据规范、交叉验证、双源验证、数据来源。输入：通常作为底层规范被其他研究流程引用，也可单独查阅某类数据的取数方式。"
 ---
 
 ## Codex adapter note

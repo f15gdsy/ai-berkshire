@@ -1,6 +1,6 @@
 ---
 name: era-alpha
-description: "AI Berkshire skill: 时代α捕手：高增长核心资产的识别-验证-持有框架. Source: skills/era-alpha.md."
+description: "时代α捕手：对高增长行业执行\"时代α四步法\"——建立行业认知地图 → 自问核心问题 → 全方位验证 → 持有到拐点，找出真正有定价权、有壁垒、能持续跑赢同行的 α 企业，并给出介入与退出纪律。触发词：时代alpha、α捕手、高增长行业、核心资产、下一个宁德时代。输入：行业/方向（如\"人形机器人\"）。"
 ---
 
 ## Codex adapter note

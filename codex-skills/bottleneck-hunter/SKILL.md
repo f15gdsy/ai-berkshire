@@ -1,6 +1,6 @@
 ---
 name: bottleneck-hunter
-description: "AI Berkshire skill: 供应链瓶颈猎手：AI驱动的全球产业链瓶颈套利. Source: skills/bottleneck-hunter.md."
+description: "供应链瓶颈猎手：对超级趋势（如AI算力、电动车、机器人）执行产业链瓶颈扫描与套利机会挖掘——不问\"AI推荐什么股票\"，问\"趋势继续扩张哪一环会先不够用\"。产出瓶颈地图、每日扫描报告与观察名单。触发词：供应链瓶颈、瓶颈扫描、产业链瓶颈、产能缺口、超级趋势套利、bottleneck。输入：趋势/主题名称（如\"AI算力\"）。"
 ---
 
 ## Codex adapter note
@@ -335,7 +335,7 @@ B级瓶颈（有压力）：
 
 | 标的 | 建议动作 | 理由 |
 |------|---------|------|
-| A | 执行 `/investment-team` 深入研究 | S级瓶颈+多重验证 |
+| A | 执行 `investment-team` 深入研究 | S级瓶颈+多重验证 |
 | B | 加入观察名单，等下季财报 | 逻辑成立但收入未体现 |
 | C | 暂不追踪 | 替代技术风险过高 |
 

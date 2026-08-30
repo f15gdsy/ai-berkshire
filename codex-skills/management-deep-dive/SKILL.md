@@ -1,6 +1,6 @@
 ---
 name: management-deep-dive
-description: "AI Berkshire skill: 管理层纵深研究：买股票就是买人. Source: skills/management-deep-dive.md."
+description: "管理层纵深研究：\"买股票就是买人\"——对公司管理层（创始人/CEO）做深度研究，评估能力、诚信与资本配置记录。触发词：管理层研究、买股票就是买人、CEO分析、管理层评估、创始人研究。输入：`公司名` 或 `人名 公司名`（如 `王兴 美团`）。"
 ---
 
 ## Codex adapter note
@@ -27,7 +27,7 @@ This skill is generated from `skills/management-deep-dive.md` so Claude Code and
 
 大多数投资分析对管理层的评估停留在表面：履历、持股比例、薪酬。但巴菲特花大量时间**和管理层吃饭聊天**，李录说**他投资的本质是投人**，段永平说**买股票就是买人**。
 
-本Skill是 `/investment-research` 第五步管理层评估的**深化版**。当标准投资研究中管理层评分不确定（★★★或以下）、或管理层是核心投资逻辑时，使用本Skill做纵深研究。
+本Skill是 `investment-research`（skill 名，未安装时独立执行）第五步管理层评估的**深化版**。当标准投资研究中管理层评分不确定（★★★或以下）、或管理层是核心投资逻辑时，使用本Skill做纵深研究。
 
 AI无法和管理层吃饭，但可以通过公开信息做到：
 - **追踪管理层的话与做是否一致**（承诺vs兑现）

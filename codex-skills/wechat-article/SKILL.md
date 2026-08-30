@@ -1,6 +1,6 @@
 ---
 name: wechat-article
-description: "AI Berkshire skill: 微信公众号文章：作者-编辑-读者三Agent协作. Source: skills/wechat-article.md."
+description: "微信公众号文章：作者-编辑-读者三Agent协作——作者写深度初稿、编辑精修结构和表达、读者从目标受众视角审读，产出一篇可直接发布的公众号文章。触发词：公众号文章、微信文章、写篇文章、发公众号。输入：主题描述（如 `大模型OPD技术解读`）。"
 ---
 
 ## Codex adapter note
