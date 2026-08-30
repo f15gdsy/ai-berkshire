@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>赛轮轮胎 2026Q2 财报精读 | AI Berkshire</title>
+<style>
+  :root {
+    --bg: #121316;
+    --bg-raise: #1a1c20;
+    --bg-inset: #0d0e11;
+    --line: #2a2d33;
+    --line-soft: #212329;
+    --text: #e9e9e6;
+    --text-dim: #a7a9ad;
+    --text-faint: #6f7278;
+    --accent: #7fb0ff;
+    --up: #e05d5d;
+    --down: #3fae7a;
+    --warn: #d9a44a;
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono {
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, "PingFang SC", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- header ---------- */
+  header { padding: 72px 0 40px; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font-size: 12px; letter-spacing: 0.22em; color: var(--accent);
+    text-transform: uppercase; margin-bottom: 18px;
+  }
+  h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+  h1 .thin { color: var(--text-dim); font-weight: 400; }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px 28px;
+    margin-top: 22px; font-size: 13px; color: var(--text-dim);
+  }
+  .meta b { color: var(--text); font-weight: 600; }
+  .meta .tag {
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 1px 12px; color: var(--text-dim); font-size: 12px;
+  }
+  .meta .tag.accent { border-color: var(--accent); color: var(--accent); }
+  .rating { color: var(--accent); font-weight: 600; }
+
+  /* ---------- verdict banner ---------- */
+  .verdict {
+    margin: 36px 0 0; padding: 20px 24px;
+    background: var(--bg-raise); border-radius: var(--radius);
+    border: 1px solid var(--line-soft); border-left: 3px solid var(--accent);
+  }
+  .verdict .label { font-size: 12px; color: var(--text-faint); letter-spacing: 0.14em; margin-bottom: 6px; }
+  .verdict p { font-size: 16px; }
+  .verdict p b { color: var(--accent); }
+
+  /* ---------- sections ---------- */
+  section { padding: 44px 0; border-bottom: 1px solid var(--line-soft); }
+  section:last-of-type { border-bottom: none; }
+  h2 {
+    font-size: 21px; font-weight: 700; letter-spacing: -0.01em;
+    margin-bottom: 22px; padding-left: 14px; position: relative;
+  }
+  h2::before {
+    content: ""; position: absolute; left: 0; top: 6px; bottom: 6px;
+    width: 3px; background: var(--accent); border-radius: 2px;
+  }
+  h3 { font-size: 15.5px; font-weight: 600; margin: 26px 0 12px; color: var(--text); }
+  h3:first-child { margin-top: 0; }
+  p { color: var(--text-dim); margin-bottom: 12px; }
+  p b, li b { color: var(--text); }
+  .note { font-size: 13px; color: var(--text-faint); }
+  .lead { font-size: 15px; }
+
+  /* ---------- data tables ---------- */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 6px; font-size: 13.5px; }
+  th {
+    text-align: left; font-weight: 600; color: var(--text-faint);
+    font-size: 12px; letter-spacing: 0.04em;
+    padding: 8px 10px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--line-soft); color: var(--text-dim); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; }
+  td.strong { color: var(--text); font-weight: 600; }
+  td .sub { display: block; font-size: 11.5px; color: var(--text-faint); }
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+  .warn { color: var(--warn); }
+
+  /* ---------- kpi tiles ---------- */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0 4px; }
+  .kpi {
+    background: var(--bg-raise); border-radius: var(--radius);
+    padding: 16px 18px; border: 1px solid var(--line-soft);
+  }
+  .kpi .k { font-size: 12px; color: var(--text-faint); margin-bottom: 4px; }
+  .kpi .v { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .kpi .s { font-size: 12px; color: var(--text-faint); margin-top: 2px; }
+
+  /* ---------- change blocks ---------- */
+  .change {
+    display: grid; grid-template-columns: 44px 1fr; gap: 16px;
+    padding: 18px 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .change:last-child { border-bottom: none; }
+  .change .idx {
+    width: 34px; height: 34px; border-radius: var(--radius);
+    background: var(--bg-raise); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: var(--accent);
+  }
+  .change h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .change p { margin-bottom: 0; font-size: 14px; }
+
+  /* ---------- sigma badge ---------- */
+  .sigma {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg-inset); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 12px 16px; margin: 14px 0;
+    font-size: 13px; color: var(--text-dim);
+  }
+  .sigma .mark {
+    color: var(--accent); font-weight: 700; font-size: 13px;
+    border: 1px solid var(--accent); border-radius: 6px; padding: 0 8px;
+    white-space: nowrap;
+  }
+  .sigma code { color: var(--text); }
+
+  /* ---------- overseas cards ---------- */
+  .overseas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .ocard {
+    background: var(--bg-raise); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 18px 20px;
+  }
+  .ocard .name { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
+  .ocard .row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 13.5px; }
+  .ocard .row span:first-child { color: var(--text-faint); }
+  .ocard .row span:last-child { color: var(--text); font-weight: 600; }
+
+  /* ---------- tone signals ---------- */
+  .signal { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line-soft); }
+  .signal:last-child { border-bottom: none; }
+  .signal .badge {
+    font-size: 12px; font-weight: 600; text-align: center;
+    border-radius: 6px; padding: 3px 0; height: fit-content; margin-top: 2px;
+  }
+  .badge.good { color: var(--down); border: 1px solid var(--down); }
+  .badge.warn { color: var(--warn); border: 1px solid var(--warn); }
+  .signal p { margin: 0; font-size: 14px; }
+
+  /* ---------- checklist ---------- */
+  ul.check { list-style: none; }
+  ul.check li {
+    padding: 10px 0 10px 26px; position: relative;
+    border-bottom: 1px solid var(--line-soft); font-size: 14px; color: var(--text-dim);
+  }
+  ul.check li:last-child { border-bottom: none; }
+  ul.check li::before {
+    content: ""; position: absolute; left: 2px; top: 18px;
+    width: 8px; height: 8px; border-radius: 2px; border: 1.5px solid var(--text-faint);
+  }
+  ul.check li b { color: var(--text); }
+
+  /* ---------- pending questions ---------- */
+  ol.pending { list-style: none; counter-reset: q; }
+  ol.pending li {
+    counter-increment: q; padding: 10px 0 10px 40px; position: relative;
+    border-bottom: 1px solid var(--line-soft); font-size: 14px; color: var(--text-dim);
+  }
+  ol.pending li:last-child { border-bottom: none; }
+  ol.pending li::before {
+    content: counter(q, decimal-leading-zero);
+    position: absolute; left: 0; top: 12px;
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px; color: var(--accent);
+  }
+
+  /* ---------- thesis columns ---------- */
+  .thesis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .tcol { background: var(--bg-raise); border-radius: var(--radius); border: 1px solid var(--line-soft); padding: 18px 20px; }
+  .tcol .t { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+  .tcol.long .t { color: var(--up); }
+  .tcol.short .t { color: var(--down); }
+  .tcol ul { list-style: none; }
+  .tcol li { font-size: 13.5px; color: var(--text-dim); padding: 4px 0; }
+  .tcol li::before { content: "- "; color: var(--text-faint); }
+
+  /* ---------- conclusion ---------- */
+  .concl { display: grid; gap: 0; }
+  .concl .row { display: grid; grid-template-columns: 200px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--line-soft); }
+  .concl .row:last-child { border-bottom: none; }
+  .concl .q { font-size: 13px; color: var(--text-faint); font-weight: 600; padding-top: 2px; }
+  .concl .a { font-size: 14px; color: var(--text-dim); }
+  .concl .a b { color: var(--text); }
+
+  /* ---------- appendix ---------- */
+  details { margin: 12px 0; }
+  summary {
+    cursor: pointer; font-size: 13.5px; color: var(--text-dim);
+    padding: 10px 0; font-weight: 600;
+  }
+  summary:hover { color: var(--text); }
+  pre {
+    background: var(--bg-inset); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 16px 18px; overflow-x: auto;
+    font-size: 12.5px; line-height: 1.7; color: var(--text-dim);
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  pre .ok { color: var(--down); }
+
+  footer {
+    padding: 32px 0 56px; font-size: 12.5px; color: var(--text-faint);
+    border-top: 1px solid var(--line); margin-top: 12px;
+  }
+
+  @media (max-width: 768px) {
+    header { padding-top: 48px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .overseas, .thesis { grid-template-columns: 1fr; }
+    .concl .row { grid-template-columns: 1fr; gap: 4px; }
+    .change { grid-template-columns: 1fr; }
+    .change .idx { display: none; }
+    .signal { grid-template-columns: 76px 1fr; }
+    table { font-size: 12.5px; display: block; overflow-x: auto; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    section, .verdict { animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Earnings Review · 财报精读</div>
+  <h1>赛轮轮胎 <span class="thin">2026Q2 财报精读</span></h1>
+  <div class="meta">
+    <span>报告期间 <b>2026 半年度（Q2 单季 + H1 累计）</b></span>
+    <span>报告日期 <b>2026-08-30</b></span>
+    <span>资料可得性 <b class="rating">A级</b></span>
+    <span class="tag accent">feat/sub-business 专章测试产出</span>
+    <span class="tag">601058.SH</span>
+  </div>
+  <div class="verdict">
+    <div class="label">一句话结论</div>
+    <p><b>表观超预期、实质符合偏超。</b>Q2 归母净利 +39.26% 有低基数与汇兑口径的两面性；剔除汇兑后利润总额增速约 +40% [推算]，确认盈利拐点，但"量增价减 + 原材料急涨"的剪刀差是下季度核心变量。</p>
+  </div>
+</header>
+
+<section id="s1">
+  <h2>核心数据速览</h2>
+  <table>
+    <thead><tr><th>指标</th><th class="num">2026H1</th><th class="num">2026Q2 单季</th><th class="num">Q2 同比</th><th class="num">2026Q1 单季</th><th class="num">环比</th></tr></thead>
+    <tbody>
+      <tr><td>营业收入</td><td class="num strong mono">200.27亿</td><td class="num strong mono">105.66亿</td><td class="num up mono">+15.16%</td><td class="num mono">94.61亿</td><td class="num up mono">+11.68%</td></tr>
+      <tr><td>归母净利润</td><td class="num strong mono">21.60亿</td><td class="num strong mono">11.03亿</td><td class="num up mono">+39.26%</td><td class="num mono">10.56亿</td><td class="num up mono">+4.5%</td></tr>
+      <tr><td>扣非归母净利润</td><td class="num mono">20.60亿</td><td class="num mono">10.30亿</td><td class="num up mono">+25.7%</td><td class="num mono">10.30亿</td><td>-</td></tr>
+      <tr><td>毛利率</td><td class="num mono">26.99%</td><td class="num mono">27.10%</td><td class="num">-</td><td class="num mono">26.86%</td><td class="num mono">+0.24pct</td></tr>
+      <tr><td>归母净利率</td><td class="num mono">10.78%</td><td class="num mono">10.44%</td><td class="num">-</td><td class="num mono">11.16%</td><td class="num down mono">-0.72pct</td></tr>
+      <tr><td>基本EPS</td><td class="num mono">0.66元</td><td class="num mono">0.3356元</td><td class="num">-</td><td class="num mono">0.32元</td><td class="num">-</td></tr>
+      <tr><td>经营现金流净额</td><td class="num mono">10.33亿</td><td class="num mono">8.57亿</td><td class="num">-</td><td class="num mono">1.76亿</td><td class="num">-</td></tr>
+      <tr><td>利润总额</td><td class="num mono">25.74亿</td><td class="num mono">13.26亿</td><td class="num up mono">+19.83%</td><td class="num mono">12.48亿</td><td class="num">-</td></tr>
+    </tbody>
+  </table>
+  <p class="note">两源交叉验证：营业收入与归母净利润在 westockdata 与 NeoData 间误差 0.00%（financial_rigor.py cross-validate 通过）。半年报于 2026-08-30 晚间披露，数据为未经审计的季度财务数据。</p>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="k">总市值</div><div class="v mono">473.2亿</div><div class="s">14.39元 × 32.881亿股，验算偏差 0.01%</div></div>
+    <div class="kpi"><div class="k">PE (TTM)</div><div class="v mono">12.3x</div><div class="s">TTM 归母净利 38.51亿</div></div>
+    <div class="kpi"><div class="k">PB</div><div class="v mono">1.94x</div><div class="s">归母净资产 226.62亿</div></div>
+    <div class="kpi"><div class="k">中期分红率</div><div class="v mono">22.84%</div><div class="s">每股 0.15元，合计 4.93亿</div></div>
+  </div>
+</section>
+
+<section id="s2">
+  <h2>本期最重要的三个变化</h2>
+  <div class="change">
+    <div class="idx mono">1</div>
+    <div>
+      <h4>Q2 利润表观加速，剔除汇兑扰动后主业真实增速约 +40% [推算]</h4>
+      <p>Q2 归母净利 +39.26%，显著高于 H1 的 +17.97%。拆解：本期汇兑损失 2.42 亿（去年同期为收益 1.36 亿），财务费用同比 +429.74%。以利润总额口径还原：2026H1 剔除汇兑影响 28.16 亿，对比 2025H1 同口径 20.12 亿，同比 +39.96% [推算]。主业盈利动能强于表观数字。</p>
+    </div>
+  </div>
+  <div class="change">
+    <div class="idx mono">2</div>
+    <div>
+      <h4>"量增价减 + 原材料成本急涨"的剪刀差出现</h4>
+      <p>Q2 自产自销销量同比 +19.97%，但均价同比 -2.54%；同期四项主要原材料综合采购价格同比 +6.81%、环比 +15.85%（Q1 为同比 -12.12%）。成本压力二季度集中到来，毛利率仅靠产品结构维持（27.10%），Q3 能否通过涨价函传导是关键观察点。</p>
+    </div>
+  </div>
+  <div class="change">
+    <div class="idx mono">3</div>
+    <div>
+      <h4>典型扩张期财务特征：利润"纸面化"程度上升</h4>
+      <p>H1 经营现金流净额 10.33 亿，仅为归母净利的 47.8%（低于 80% 警戒线）；收现比 87.3%。应收（票据+账款）较年初 +21.9%、存货 +14.6%，均快于收入增速（+13.9%）；有息负债增至 146.75 亿（较年初 +26.2 亿），投资活动净流出 25.23 亿。成长性资本开支是主因，非利润造假信号，但需持续跟踪回款质量。</p>
+    </div>
+  </div>
+</section>
+
+<section id="s3">
+  <h2>各业务线数据与运营情况</h2>
+  <p class="lead">分部数据以原始财报分部附注为主源。本节分部数据来自公司《2026年第一/第二季度主要经营数据公告》及 2026 半年报，均为<b>单源（分部数据）·来源：公司经营数据公告/半年报</b>。公司按上交所行业信息披露指引披露季度经营数据，属公司一手披露，第三方数据库无分部颗粒度。</p>
+
+  <h3>分部总览</h3>
+  <table>
+    <thead><tr><th>业务线</th><th class="num">2026H1 收入</th><th class="num">同比</th><th class="num">Q2 单季收入</th><th class="num">占 H1 收入比</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td class="strong">自产自销轮胎</td><td class="num mono">194.39亿</td><td class="num up mono">+14.99%</td><td class="num mono">103.06亿</td><td class="num mono">97.1%</td><td>核心业务，销量 4501.35 万条</td></tr>
+      <tr><td>轮胎贸易</td><td class="num mono">3.72亿</td><td class="num">-</td><td class="num mono">1.63亿</td><td class="num mono">1.9%</td><td>经销合并范围外企业轮胎</td></tr>
+      <tr><td>其他业务</td><td class="num mono">2.15亿</td><td class="num">-</td><td class="num mono">0.97亿</td><td class="num mono">1.1%</td><td>含轮胎循环利用等</td></tr>
+      <tr><td class="strong">合计</td><td class="num strong mono">200.27亿</td><td class="num up mono">+13.88%</td><td class="num mono">105.66亿</td><td class="num mono">100%</td><td>Σ校验精确到分</td></tr>
+    </tbody>
+  </table>
+  <div class="sigma">
+    <span class="mark">Σ 校验通过</span>
+    <span>Q2：自产自销 103.0636 亿 + 贸易 1.6331 亿 + 其他 0.9651 亿 = <code class="mono">10,566,180,458.55</code>，与利润表完全一致；H1 同口径校验 = <code class="mono">20,027,010,258.02</code>。偏差 0%，无内部抵销异常。</span>
+  </div>
+
+  <h3>自产自销轮胎（核心业务，占收入 97%）</h3>
+  <p class="note">行业适配运营指标：销量、均价、产量、原材料采购价格。</p>
+  <table>
+    <thead><tr><th>指标</th><th class="num">2026Q1</th><th class="num">2026Q2</th><th class="num">Q2 同比</th><th class="num">Q2 环比</th></tr></thead>
+    <tbody>
+      <tr><td>自产自销销量</td><td class="num mono">2129.49万条</td><td class="num mono">2371.86万条</td><td class="num up mono">+19.97%</td><td class="num up mono">+11.4%</td></tr>
+      <tr><td>自产自销收入</td><td class="num mono">91.33亿</td><td class="num mono">103.06亿</td><td class="num up mono">+16.92%</td><td class="num up mono">+12.8%</td></tr>
+      <tr><td>销售均价</td><td class="num mono">428.88元/条</td><td class="num mono">434.42元/条</td><td class="num down mono">-2.54%</td><td class="num up mono">+1.32%</td></tr>
+      <tr><td>产量</td><td class="num mono">2255.29万条</td><td class="num mono">2442.20万条</td><td class="num">-</td><td class="num up mono">+8.3%</td></tr>
+      <tr><td>原材料综合采购价</td><td class="num down mono">同比-12.12%</td><td class="num up mono">同比+6.81%</td><td class="num">-</td><td class="num up mono">+15.85%</td></tr>
+    </tbody>
+  </table>
+  <p><b>驱动因素：</b>全球产能放量（越南、柬埔寨满产，印尼、墨西哥爬坡，埃及建设推进）；海外需求旺盛，海内外市场同步增长；产品结构升级（高性能全钢/半钢新品、巨型工程子午胎技术）。H1 产量 4697.49 万条（+15.70%）、销量 4501.35 万条（+14.99%），产销均创历史同期新高。</p>
+  <p><b class="warn">隐忧：</b>Q2 均价同比转负（-2.54%，Q1 为 +2.71%），原材料价格同比转涨（+6.81%）。若 Q3 均价不能修复，毛利率将承压。涨价函落地与成本传导是下季度核心变量。</p>
+  <p><b>指引 vs 实际：</b>公司未发布季度量化业绩指引（A股惯例），以承诺追踪替代（见下节）。</p>
+  <p class="note"><b>数据不足标注：</b>半年报未披露半钢/全钢/非公路三条产品线的分部收入与分部毛利率，"好业务补贴坏业务"检验无法执行。留白处理，禁止推算填充。</p>
+
+  <h3>海外产能维度（半年报主要子公司，单源·半年报）</h3>
+  <div class="overseas">
+    <div class="ocard">
+      <div class="name">赛轮越南</div>
+      <div class="row"><span>2026H1 收入</span><span class="mono">46.45亿</span></div>
+      <div class="row"><span>归母净利润</span><span class="mono">8.22亿</span></div>
+      <div class="row"><span>净利率</span><span class="mono">17.7%</span></div>
+    </div>
+    <div class="ocard">
+      <div class="name">CARTTIRE（柬埔寨）</div>
+      <div class="row"><span>2026H1 收入</span><span class="mono">44.05亿</span></div>
+      <div class="row"><span>归母净利润</span><span class="mono">9.52亿</span></div>
+      <div class="row"><span>净利率</span><span class="mono">21.6%</span></div>
+    </div>
+  </div>
+  <p>两家海外主体合计收入 90.5 亿（占 H1 总收入 45.2% [推算]），合计归母净利 17.74 亿（占归母净利 82.1% [推算]）。<b>海外基地是利润的绝对主力</b>，且柬埔寨主体净利率高于越南。境外资产 322.93 亿，占总资产 62.88%：全球化布局既是关税壁垒下的护城河，也是汇率与地缘风险的敞口（本期汇兑损失 2.42 亿即为体现）。</p>
+
+  <h3>轮胎贸易 + 其他业务（合计占比约 3%）</h3>
+  <p>轮胎贸易 Q2 收入 1.63 亿（Q1 为 2.09 亿），经销合并范围外企业产品，属渠道补充业务。其他业务（含轮胎循环利用）H1 约 2.15 亿 [推算]，半年报表述"保持良好发展态势"，无量化细节，数据不足标注。</p>
+</section>
+
+<section id="s4">
+  <h2>管理层语气与承诺追踪</h2>
+  <p class="note">基于半年报及同步披露的新闻通稿口径；业绩说明会/电话会纪要尚未获取，语气结论限于书面披露。</p>
+  <div class="signal">
+    <span class="badge good">坦诚信号</span>
+    <p>半年报明确披露汇兑损失 2.42 亿及财务费用 +429.74% 的归因（"主要系汇兑损失增加所致"），未回避问题。</p>
+  </div>
+  <div class="signal">
+    <span class="badge good">清晰信号</span>
+    <p>投资活动现金流恶化归因具体（"本期因项目建设需要而购买土地设备增加"），与埃及、董家口、印尼、墨西哥的产能叙事自洽。</p>
+  </div>
+  <div class="signal">
+    <span class="badge warn">宣传倾向</span>
+    <p>通稿存在"多项指标逆势新高""盈利弹性进一步释放"等选择性强调表述，属实但需校正；本报告已用剔除汇兑口径还原。</p>
+  </div>
+
+  <h3>承诺追踪</h3>
+  <table>
+    <thead><tr><th>承诺事项</th><th>本期兑现情况</th><th class="num">评价</th></tr></thead>
+    <tbody>
+      <tr><td>连续实施中期分红（已连续三年）</td><td>2026 中期拟派 0.15 元/股，合计 4.93 亿，分红率 22.84%</td><td class="num down">兑现</td></tr>
+      <tr><td>海外产能建设（2025 年报：埃及、董家口稳步推进）</td><td>半年报维持"稳步推进"表述，无延期措辞</td><td class="num warn">方向兑现，进度无量化</td></tr>
+      <tr><td>"提质增效重回报"行动方案</td><td>已同步披露半年度评估报告</td><td class="num down">程序性兑现</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s5">
+  <h2>附注与隐藏信息</h2>
+  <ul class="check">
+    <li><b>资产减值损失 2.30 亿</b>（H1，NeoData 利润表）：绝对金额不小，附注明细未在已获取材料中披露（存货跌价还是应收减值待核），叠加存货余额较年初 +14.6%，需重点核实。<span class="warn">数据不足，待查半年报附注。</span></li>
+    <li><b>财务费用 4.57 亿（+429.74%）</b>：汇兑损失 2.42 亿为主动披露原因；同时有息负债 146.75 亿（较年初 +26.2 亿），利息费用进入上升通道，扩张的融资成本将常态化。</li>
+    <li><b>会计政策变更</b>：公司同日披露《关于会计政策变更的公告》，内容未及获取，需确认是否影响分部数据口径与可比性。<span class="warn">待核。</span></li>
+    <li><b>员工持股计划</b>：第三个锁定期届满暨解锁公告同日披露，解锁条件成就，需关注后续减持压力。</li>
+    <li><b>商誉</b>：3.12 亿，占净资产 1.3%，减值风险可忽略。</li>
+    <li><b>异常信号检测</b>：应收增速（+21.9%）> 存货增速（+14.6%）> 收入增速（+13.9%）；经营现金流/净利 47.8%。无资本化开支突增，扣非/归母 = 95.4%，利润含金量尚可。</li>
+  </ul>
+</section>
+
+<section id="s6">
+  <h2>待验证问题清单</h2>
+  <p class="note">业绩说明会纪要未获取，以下问题按重要性排序留待后续验证。</p>
+  <ol class="pending">
+    <li>资产减值 2.30 亿的构成：存货跌价还是应收坏账？是否与胶价波动备货相关？</li>
+    <li>半钢/全钢/非公路三分部的收入与毛利率拆分？"好业务补贴坏业务"检验。</li>
+    <li>Q2 均价同比 -2.54% 的结构归因：海外低价新基地爬坡产品拖累，还是竞争性降价？</li>
+    <li>Q3 涨价函落地率与原材料成本传导的时滞（采购价环比 +15.85% 的压力有多少能转嫁）？</li>
+    <li>墨西哥、印尼基地的当前盈利状态与埃及投产时间表？</li>
+    <li>会计政策变更的具体内容及对分部口径的影响？</li>
+  </ol>
+</section>
+
+<section id="s7">
+  <h2>与投资论文的关系</h2>
+  <p>当前无赛轮轮胎持仓与既有投资论文。本财报提供的论文骨架（供 thesis-tracker 建档）：</p>
+  <div class="thesis">
+    <div class="tcol long">
+      <div class="t">买入论点</div>
+      <ul>
+        <li>全球产能放量驱动的量增逻辑：销量 +14.99%，产销创历史同期新高</li>
+        <li>海外基地净利率（17.7% / 21.6%）显著高于公司整体（10.78%）</li>
+        <li>估值 PE(TTM) 12.3x、PB 1.94x，处于制造业低位</li>
+      </ul>
+    </div>
+    <div class="tcol short">
+      <div class="t">核心风险</div>
+      <ul>
+        <li>均价下行与原材料上行的剪刀差，若 Q3 持续将考验 25% 毛利率一线</li>
+        <li>汇率敞口：境外资产占比 62.9%，本期汇兑损失 2.42 亿</li>
+        <li>贸易政策：欧盟、美国关税与反倾销的不确定性</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note" style="margin-top:12px">证伪条件：连续两个季度均价同比降幅扩大且毛利率跌破 25%；海外基地净利率回落至 12% 以下。</p>
+</section>
+
+<section id="s8">
+  <h2>结论：这份财报改变了什么</h2>
+  <div class="concl">
+    <div class="row">
+      <div class="q">超预期、符合还是低于？</div>
+      <div class="a"><b>表观超预期、实质符合偏超。</b>Q2 归母净利 +39.26% 有低基数（2025Q2 净利率承压）与汇兑口径的两面性；剔除汇兑后利润总额增速约 +40% [推算]，验证主业动能在"量"上扎实、在"价"上开始松动。对比 2025 全年净利 -13.3%、2026Q1 仅 +1.72% 的低迷，本季确认盈利拐点。</div>
+    </div>
+    <div class="row">
+      <div class="q">对投资论文的影响</div>
+      <div class="a">若新建多头论文：<b>强化</b>量增与全球化逻辑；同时新增一条需要跟踪的负面变量（价、成本剪刀差）。</div>
+    </div>
+    <div class="row">
+      <div class="q">下一个催化剂</div>
+      <div class="a">Q3 经营数据公告的<b>均价与原材料价格剪刀差是否收敛</b>（涨价传导）；埃及基地投产落地。</div>
+    </div>
+    <div class="row">
+      <div class="q">若已持有</div>
+      <div class="a"><b>持有。</b>量增逻辑未被破坏、估值不贵（PE 12.3x、PB 1.94x、中期分红率 22.84%），但 Q3 均价数据是加仓的前置条件；若 Q3 均价同比降幅 >3% 且毛利率跌破 25%，降仓复核。</div>
+    </div>
+  </div>
+</section>
+
+<section id="appendix">
+  <h2>附录</h2>
+
+  <details open>
+    <summary>金融严谨性工具验证记录</summary>
+    <pre>1. 市值验算：14.39 × 32.881亿股 = 473.2亿，偏差 0.01%            [通过]
+2. 收入交叉验证（westockdata vs NeoData）：偏差 0.00%             [通过]
+3. 归母净利交叉验证（westockdata vs NeoData）：偏差 0.00%          [通过]
+4. Σ业务线校验 Q2：103.0636+1.6331+0.9651 = 105.6618亿
+   = 利润表营业收入（精确值 10,566,180,458.55）                    [通过]
+5. Σ业务线校验 H1：Σ = 200.2701亿 = 20,027,010,258.02             [通过]
+6. 派生指标（calc 精确计算）：
+   Q2毛利率 27.10% / H1毛利率 26.99% / PE(TTM) 12.29 / PB 1.94
+   OCF÷归母净利 47.82% / 收现比 87.32% / H1自产自销均价 431.85元/条
+   H1自产自销收入同比 +14.99% / 剔除汇兑利润总额增速 +39.96% [推算]
+   分红率 22.84%</pre>
+  </details>
+
+  <details>
+    <summary>数据来源清单</summary>
+    <table>
+      <thead><tr><th>数据项</th><th>来源</th><th>属性</th></tr></thead>
+      <tbody>
+        <tr><td>三大表（2026H1 及近4期）</td><td>westockdata（腾讯自选股数据接口）</td><td>主源</td></tr>
+        <tr><td>同上交叉验证</td><td>NeoData（利润表 API）</td><td>横向对照（通达信 MCP 未连接，按规范降级）</td></tr>
+        <tr><td>Q1/Q2 分业务线量价数据</td><td>公司《2026年第一/第二季度主要经营数据公告》（中国证券报披露版、雪球公告频道）</td><td>单源（分部数据）·公司一手公告</td></tr>
+        <tr><td>半年报要点（产销、子公司、分红、汇兑）</td><td>2026 半年度报（雪球公告 AI 摘要 + 网易/证券时报/东财报道互证）</td><td>一手+媒体交叉</td></tr>
+        <tr><td>2025 年报基数（分地区毛利率、全年均价）</td><td>2025 年报（经中银证券、银河证券研报引用）</td><td>二手·研报</td></tr>
+        <tr><td>行情/股价</td><td>westockdata kline（2026-08-28 收盘）</td><td>主源</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <details>
+    <summary>降级路径记录（数据源规范实测）</summary>
+    <pre>规范路径：主源 westockdata + 横向对照通达信 MCP → 不可用时降级 NeoData
+实测结果：通达信 MCP 未连接，自动降级 NeoData 完成横向对照验证
+结论：financial-data.md 四级降级链在真实执行中按设计工作</pre>
+  </details>
+</section>
+
+<footer>
+  本报告由 AI Berkshire earnings-review skill 生成（feat/sub-business 分支测试产出），仅供学习与研究，不构成任何投资建议。分部数据未经审计，以公司正式披露文件为准。投资有风险，决策需谨慎。
+</footer>
+
+</div>
+</body>
+</html>
