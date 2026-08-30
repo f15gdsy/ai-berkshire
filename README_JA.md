@@ -10,9 +10,9 @@
 >
 > AIでリサーチの深度と効率を再定義する。
 
-**AI Berkshire** は、Claude CodeおよびCodexに対応した投資リサーチSkillのコレクションです。バフェット・マンガー・段永平（ダン・ヨンピン）・李録（リ・ルー）という4人のバリュー投資の巨人の方法論を体系化し、AIエージェントによりプロフェッショナル水準のリサーチを提供します。
+**AI Berkshire** は、Claude Code・Codex・WorkBuddyに対応した投資リサーチSkillのコレクションです。バフェット・マンガー・段永平（ダン・ヨンピン）・李録（リ・ルー）という4人のバリュー投資の巨人の方法論を体系化し、AIエージェントによりプロフェッショナル水準のリサーチを提供します。
 
-1人 + Claude Code / Codex = 投資リサーチチーム丸ごと。
+1人 + Claude Code / Codex / WorkBuddy = 投資リサーチチーム丸ごと。
 
 [実績](#実績) · [なぜAIに直接聞いてはいけないのか](#なぜaiに直接聞いてはいけないのか) · [Skill一覧](#skill一覧20スキル) · [クイックスタート](#クイックスタート) · [レポート](#実際のリサーチレポート) · [設計思想](#設計思想)
 
@@ -226,7 +226,7 @@ AIに直接聞けばコンテキストウィンドウは1つです。4つの並�
 
 ### 1. AIクライアントのインストール
 
-このリポジトリは1つの標準ワークフローを維持し、Claude Codeコマンドと Codex skillの両方を提供します。使用するクライアントをインストールしてください。
+このリポジトリは1つの標準ワークフローを維持し、Claude Codeコマンド、Codex skill、WorkBuddy skillを提供します。使用するクライアントをインストールしてください。
 
 Claude Codeユーザーの場合：
 
@@ -313,7 +313,28 @@ REM オプション：Codexスラッシュプロンプトをインストール
 .\scripts\install-codex-prompts.bat
 ```
 
-リポジトリは3つのエントリーポイントを維持しています：`skills/*.md` はClaude Codeコマンドのソース；`codex-skills/*/SKILL.md` は `scripts/sync-codex-skills.py` が `skills/*.md` から生成するCodex skillパッケージ；`codex-prompts/*.md` はオプションのCodexスラッシュプロンプト互換レイヤーです。
+WorkBuddyユーザーでmacOS / Linuxの場合：
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/xbtlin/ai-berkshire.git
+
+# WorkBuddy skillsを生成して ~/.workbuddy/skills にインストール
+cd ai-berkshire
+./scripts/install-workbuddy-skills.sh
+```
+
+WorkBuddyユーザーでWindows PowerShell / コマンドプロンプトの場合：
+
+```bat
+git clone https://github.com/xbtlin/ai-berkshire.git
+cd ai-berkshire
+.\scripts\install-workbuddy-skills.bat
+```
+
+インストール後、WorkBuddyを再起動（またはスキルリストを更新）してください。注意：`ai-berkshire-tools` は他のAI Berkshire WorkBuddy skillの共有ツールパッケージ（`financial_rigor.py` などの検証スクリプトのコピーを格納）であり、他のskillと一緒にインストールする必要があります。インストールスクリプトが自動的に処理します。
+
+リポジトリは4つのエントリーポイントを維持しています：`skills/*.md` はClaude Codeコマンドのソース（YAMLフロントマター付き、`description` のトリガーワードが各クライアントでの自動スキルマッチングに使用されます）；`codex-skills/*/SKILL.md` は `scripts/sync-codex-skills.py` が `skills/*.md` から生成するCodex skillパッケージ；`codex-prompts/*.md` はオプションのCodexスラッシュプロンプト互換レイヤー；`workbuddy-skills/*/SKILL.md` は `scripts/sync-workbuddy-skills.py` が生成するWorkBuddy skillパッケージ（共有の `ai-berkshire-tools` パッケージを含み、Agent Skills規約 `<name>/SKILL.md` + フロントマターに対応するクライアントであれば単体でコピーして使用できます）。
 
 ### 3. 使い方
 
@@ -365,6 +386,15 @@ Codexスラッシュプロンプトをインストールした場合、Codexを�
 
 ```text
 /prompts:investment-research テンセント
+```
+
+WorkBuddyではインストール後に再起動し、自然言語でタスクを記述するだけで、description内のトリガーワードに基づいてskillが自動的にマッチします：
+
+```text
+決算精読チームでテンセント2025Q4を分析して
+AI算力業界の投資対象をスクリーニングして
+段永平のスタイルで答えて：拼多多の本当のモートはどこにあるか？
+美団についてWeChatの記事を書いて
 ```
 
 ---

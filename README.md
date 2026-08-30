@@ -8,9 +8,9 @@
 >
 > 用 AI 重新定义投资研究的深度与效率。
 
-**AI Berkshire** 是一套同时兼容 Claude Code 与 Codex 的投资研究 Skill 合集，将巴菲特、芒格、段永平、李录四位价值投资大师的方法论系统化、结构化，通过 AI Agent 实现专业级投资研究。
+**AI Berkshire** 是一套同时兼容 Claude Code、Codex 与 WorkBuddy 的投资研究 Skill 合集，将巴菲特、芒格、段永平、李录四位价值投资大师的方法论系统化、结构化，通过 AI Agent 实现专业级投资研究。
 
-一个人 + Claude Code / Codex = 一个投研团队。
+一个人 + Claude Code / Codex / WorkBuddy = 一个投研团队。
 
 > 📮 **仓库是全量框架，公众号是精选。** 真正值得深研的公司，加上报告之外我自己的判断与取舍，都在微信公众号「**复利炼丹炉**」——[扫码关注 ↓](#精选研究首发于公众号)
 
@@ -240,7 +240,7 @@ AI Berkshire 确保：**同样的输入 → 结构一致、深度一致的输出
 
 ### 1. 安装 AI 客户端
 
-本仓库保留同一套 canonical workflow，并分别提供 Claude Code commands 与 Codex skills。按你使用的客户端安装即可。
+本仓库保留同一套 canonical workflow，并分别提供 Claude Code commands、Codex skills 与 WorkBuddy skills。按你使用的客户端安装即可。
 
 Claude Code 用户：
 
@@ -327,7 +327,28 @@ REM 可选：安装 Codex slash prompts
 .\scripts\install-codex-prompts.bat
 ```
 
-仓库同时维护三套入口：`skills/*.md` 是 Claude Code command 源文件；`codex-skills/*/SKILL.md` 是 Codex skill 包，由 `scripts/sync-codex-skills.py` 从 `skills/*.md` 生成；`codex-prompts/*.md` 是可选的 Codex slash prompt 兼容层。
+WorkBuddy 用户安装（macOS / Linux）：
+
+```bash
+# 克隆仓库
+git clone https://github.com/xbtlin/ai-berkshire.git
+
+# 生成并安装 WorkBuddy skills 到 ~/.workbuddy/skills
+cd ai-berkshire
+./scripts/install-workbuddy-skills.sh
+```
+
+WorkBuddy 用户安装（Windows PowerShell / Command Prompt）：
+
+```bat
+git clone https://github.com/xbtlin/ai-berkshire.git
+cd ai-berkshire
+.\scripts\install-workbuddy-skills.bat
+```
+
+安装后重启 WorkBuddy（或刷新 skill 列表）即可使用。注意：`ai-berkshire-tools` 是其他 AI Berkshire WorkBuddy skill 的共享工具包（存放 `financial_rigor.py` 等验证脚本的副本），必须与其他 skill 一起安装，安装脚本已自动处理。
+
+仓库同时维护四套入口：`skills/*.md` 是 Claude Code command 源文件（含 YAML frontmatter，`description` 中的触发词用于各客户端自动匹配 skill）；`codex-skills/*/SKILL.md` 是 Codex skill 包，由 `scripts/sync-codex-skills.py` 从 `skills/*.md` 生成；`codex-prompts/*.md` 是可选的 Codex slash prompt 兼容层；`workbuddy-skills/*/SKILL.md` 是 WorkBuddy skill 包（含 `ai-berkshire-tools` 共享工具包），由 `scripts/sync-workbuddy-skills.py` 生成，也可单独复制到任何支持 Agent Skills 规范（`<name>/SKILL.md` + frontmatter）的客户端使用。
 
 ### 3. 使用
 
@@ -379,6 +400,15 @@ REM 可选：安装 Codex slash prompts
 
 ```text
 /prompts:investment-research 腾讯
+```
+
+WorkBuddy 中安装后重启，直接用自然语言描述任务即可，skill 会根据 description 中的触发词自动命中，例如：
+
+```text
+用财报精读团队分析腾讯 2025Q4
+帮我筛选 AI算力 行业的投资标的
+用段永平的方式回答：拼多多的护城河到底在哪里？
+给美团写一篇公众号文章
 ```
 
 ---
